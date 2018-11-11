@@ -13,8 +13,8 @@ NUM_CHANNELS = 1
 # The random seed that defines initialization.
 SEED = 42
 
-DROP_OUT = True
-L2_REGULARIZE = False
+DROP_OUT = False
+L2_REGULARIZE = True
 
 #Learning parameters
 LEARNING_RATE = 0.01

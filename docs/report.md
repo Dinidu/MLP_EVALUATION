@@ -20,7 +20,7 @@ Hidden Layers :
 
 The raw input passes through several convolution and max pooling layers with rectified linear activations before several fully connected layers and a softmax loss for predicting the output class. During training, we use dropout.
 
-For more details about the implementation goto: [ Implementaion ](https://www.google.com)
+For more details about the implementation goto: [ Implementaion ](#)
 
 
 ##### How to use above network :
@@ -74,6 +74,8 @@ DROP_OUT = True
 L2_REGULARIZE = True
 ```
 By making changes to the above properties, **Different versions of the network model** can be derived.
+
+Go to [ evaluation ](evaluation.md) section to see the performance evaluation of different versions of the network.
 
 
 
