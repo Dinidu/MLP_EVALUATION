@@ -103,18 +103,20 @@ class Model(object):
         return tf.matmul(hidden, self.fc2_weights) + self.fc2_biases
 
 
-    def train(self):
+    def train(self,regularize=const.L2_REGULARIZE):
         # Training computation: logits + cross-entropy loss.
         logits = self.model(self.train_data_node, False)
         loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.train_labels_node,logits=logits))
 
         # L2 regularization for the fully connected parameters.
-        regularizers = (
-                tf.nn.l2_loss(self.fc1_weights) + tf.nn.l2_loss(self.fc1_biases) +
-                tf.nn.l2_loss(self.fc2_weights) + tf.nn.l2_loss(self.fc2_biases)
-        )
-        # Add the regularization term to the loss.
-        loss += 5e-4 * regularizers
+        if regularize:
+
+            regularizers = (
+                    tf.nn.l2_loss(self.fc1_weights) + tf.nn.l2_loss(self.fc1_biases) +
+                    tf.nn.l2_loss(self.fc2_weights) + tf.nn.l2_loss(self.fc2_biases)
+            )
+            # Add the regularization term to the loss.
+            loss += 5e-4 * regularizers
 
         # Optimizer: set up a variable that's incremented once per batch and
         # controls the learning rate decay.

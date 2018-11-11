@@ -14,6 +14,7 @@ NUM_CHANNELS = 1
 SEED = 42
 
 DROP_OUT = True
+L2_REGULARIZE = False
 
 #Learning parameters
 LEARNING_RATE = 0.01

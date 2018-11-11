@@ -31,8 +31,53 @@ This network has been developed and tested with the following configurations, Ma
 
 ```
 python version 3.5
-pip version 1.8
+pip version 18.1
+virtualenv version 16.1.0
 ```
+Once the above requirements are satisfied, run the following steps to get started.
+
+Run
+```
+git clone git@github.com:Dinidu/MLP_EVALUATION.git
+cd MLP_EVALUATION
+pip install -r requirements.txt
+```
+
+As of now, the environment is ready to run the network, Before that make the desired parameters changes to change the network model. 
+
+Following .py consist of all the parametes to evaluate the network.
+
+```
+util\constant.py
+```
+```python
+DATA_PATH = 'dataset/mnist-data/'
+IMAGE_SIZE = 28
+PIXEL_DEPTH = 255
+
+# Number of classes
+NUM_CLASSES = 10
+# Validation data size
+VALIDATION_SIZE = 5000
+# This defines the size of the batch.
+BATCH_SIZE = 50
+#one channel in grayscale images.
+NUM_CHANNELS = 1
+# The random seed that defines initialization.
+SEED = 42
+
+#Learning parameters
+LEARNING_RATE = 0.01
+MOMENTUM = 0.9
+DECAY_RATE = 0.95
+DROP_OUT = True
+L2_REGULARIZE = True
+```
+By making changes to the above properties, **Different versions of the network model** can be derived.
+
+
+
+
 
 
 
