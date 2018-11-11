@@ -1,7 +1,10 @@
+import os,sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import tensorflow as tf
-import util
-from models.dataset import Dataset
+from util import constant as const
+from dataset.dataset import Dataset
 import numpy
+
 
 class Model(object):
     def __init__(self):
@@ -11,11 +14,11 @@ class Model(object):
         # training step, which we'll write once we define the graph structure.
         self.train_data_node = tf.placeholder(
             tf.float32,
-            shape=(util.BATCH_SIZE, util.IMAGE_SIZE, util.IMAGE_SIZE, util.NUM_CHANNELS)
+            shape=(const.BATCH_SIZE, const.IMAGE_SIZE, const.IMAGE_SIZE, const.NUM_CHANNELS)
         )
         self.train_labels_node = tf.placeholder(
             tf.float32,
-            shape=(util.BATCH_SIZE, util.NUM_CLASSES)
+            shape=(const.BATCH_SIZE, const.NUM_CLASSES)
         )
 
         # For the validation and test data, we'll just hold the entire dataset in
@@ -27,33 +30,33 @@ class Model(object):
         # The variables below hold all the trainable weights. For each, the
         # parameter defines how the variables will be initialized.
         self.conv1_weights = tf.Variable(
-            tf.truncated_normal([5, 5, util.NUM_CHANNELS, 32],  # 5x5 filter, depth 32.
+            tf.truncated_normal([5, 5, const.NUM_CHANNELS, 32],  # 5x5 filter, depth 32.
             stddev=0.1,
-            seed=util.SEED)
+            seed=const.SEED)
         )
         self.conv1_biases = tf.Variable(tf.zeros([32]))
 
         self.conv2_weights = tf.Variable(
             tf.truncated_normal([5, 5, 32, 64],
             stddev=0.1,
-            seed=util.SEED)
+            seed=const.SEED)
         )
         self.conv2_biases = tf.Variable(tf.constant(0.1, shape=[64]))
 
         self.fc1_weights = tf.Variable(  # fully connected, depth 512.
-            tf.truncated_normal([util.IMAGE_SIZE // 4 * util.IMAGE_SIZE // 4 * 64, 512],
+            tf.truncated_normal([const.IMAGE_SIZE // 4 * const.IMAGE_SIZE // 4 * 64, 512],
             stddev=0.1,
-            seed=util.SEED)
+            seed=const.SEED)
         )
         self.fc1_biases = tf.Variable(tf.constant(0.1, shape=[512]))
 
         self.fc2_weights = tf.Variable(
-            tf.truncated_normal([512, util.NUM_CLASSES],
+            tf.truncated_normal([512, const.NUM_CLASSES],
             stddev=0.1,
-            seed=util.SEED))
-        self.fc2_biases = tf.Variable(tf.constant(0.1, shape=[util.NUM_CLASSES]))
+            seed=const.SEED))
+        self.fc2_biases = tf.Variable(tf.constant(0.1, shape=[const.NUM_CLASSES]))
 
-    def model(self,data, train=False):
+    def model(self,data, train=const.DROP_OUT):
         """The Model definition."""
         # 2D convolution, with 'SAME' padding (i.e. the output feature map has
         # the same size as the input). Note that {strides} is a 4D array whose
@@ -96,11 +99,11 @@ class Model(object):
         # Add a 50% dropout during training only. Dropout also scales
         # activations such that no rescaling is needed at evaluation time.
         if train:
-            hidden = tf.nn.dropout(hidden, 0.5, seed=util.SEED)
+            hidden = tf.nn.dropout(hidden, 0.5, seed=const.SEED)
         return tf.matmul(hidden, self.fc2_weights) + self.fc2_biases
 
 
-    def training(self):
+    def train(self):
         # Training computation: logits + cross-entropy loss.
         logits = self.model(self.train_data_node, False)
         loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.train_labels_node,logits=logits))
@@ -118,15 +121,15 @@ class Model(object):
         batch = tf.Variable(0)
         # Decay once per epoch, using an exponential schedule starting at 0.01.
         learning_rate = tf.train.exponential_decay(
-            0.01,                       # Base learning rate.
-            batch * util.BATCH_SIZE,    # Current index into the dataset.
+            const.LEARNING_RATE,         # Base learning rate.
+            batch * const.BATCH_SIZE,    # Current index into the dataset.
             self.dataset.train_size,    # Decay step.
-            0.95,                       # Decay rate.
+            const.DECAY_RATE,            # Decay rate.
             staircase=True
         )
 
         # Use simple momentum for the optimization.
-        optimizer = tf.train.MomentumOptimizer(learning_rate,0.9).minimize(loss,global_step=batch)
+        optimizer = tf.train.MomentumOptimizer(learning_rate,const.MOMENTUM).minimize(loss,global_step=batch)
 
         # Predictions for the minibatch, validation set and test set.
         train_prediction = tf.nn.softmax(logits)
@@ -145,13 +148,13 @@ class Model(object):
         # Initialize all the variables we defined above.
         tf.global_variables_initializer().run()
 
-        steps = self.dataset.train_size // util.BATCH_SIZE
+        steps = self.dataset.train_size // const.BATCH_SIZE
         for step in range(steps):
             # Compute the offset of the current minibatch in the data.
             # Note that we could use better randomization across epochs.
-            offset = (step * util.BATCH_SIZE) % (self.dataset.train_size - util.BATCH_SIZE)
-            batch_data = self.dataset.train_data[offset:(offset + util.BATCH_SIZE), :, :, :]
-            batch_labels = self.dataset.train_labels[offset:(offset + util.BATCH_SIZE)]
+            offset = (step * const.BATCH_SIZE) % (self.dataset.train_size - const.BATCH_SIZE)
+            batch_data = self.dataset.train_data[offset:(offset + const.BATCH_SIZE), :, :, :]
+            batch_labels = self.dataset.train_labels[offset:(offset + const.BATCH_SIZE)]
             # This dictionary maps the batch data (as a numpy array) to the
             # node in the graph it should be fed to.
             feed_dict = {self.train_data_node: batch_data,
@@ -182,5 +185,3 @@ class Model(object):
             confusions[predicted, actual] += 1
 
         return error, confusions
-
-Model().training()
