@@ -14,9 +14,9 @@ The above CNN consists of an input and an output layer, as well as multiple hidd
 
 Hidden Layers :
 
-* Two Convolutional Layers 
-* Two Local Max Pooling Layers
-* Two Fully Connected Layers
+* Convolutional Layers 
+* Max Pooling Layers
+* Fully Connected Layers
 
 The raw input passes through several convolution and max pooling layers with rectified linear activations before several fully connected layers and a softmax loss for predicting the output class. During training, we use dropout.
 
