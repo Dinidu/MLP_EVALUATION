@@ -118,17 +118,12 @@ Observation ::
 ```
 Step 0 of 1000
 Mini-batch loss: 7.68296 Error: 88.00000 Learning rate: 0.01000
-2018-11-11 22:04:39.014691: W tensorflow/core/framework/allocator.cc:122] Allocation of 1003520000 exceeds 10% of system memory.
-2018-11-11 22:04:40.608435: W tensorflow/core/framework/allocator.cc:122] Allocation of 501760000 exceeds 10% of system memory.
 Validation error: 91.9%
 Step 100 of 1000
 Mini-batch loss: 3.18507 Error: 2.00000 Learning rate: 0.01000
-2018-11-11 22:04:55.915515: W tensorflow/core/framework/allocator.cc:122] Allocation of 1003520000 exceeds 10% of system memory.
-2018-11-11 22:04:57.255567: W tensorflow/core/framework/allocator.cc:122] Allocation of 501760000 exceeds 10% of system memory.
 Validation error: 5.8%
 Step 200 of 1000
 Mini-batch loss: 3.32836 Error: 10.00000 Learning rate: 0.01000
-2018-11-11 22:05:08.916096: W tensorflow/core/framework/allocator.cc:122] Allocation of 1003520000 exceeds 10% of system memory.
 Validation error: 3.9%
 Step 300 of 1000
 Mini-batch loss: 3.09006 Error: 2.00000 Learning rate: 0.01000
