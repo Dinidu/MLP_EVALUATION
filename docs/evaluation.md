@@ -1,6 +1,6 @@
 ### Network Performance Evaluation 
 
-#####Network (V1) - Configs
+#####  Network (V1) - Configs
 
 ```python
 NUM_CLASSES = 10
@@ -51,7 +51,7 @@ Validation error: 6.9%
 ```
 
 
-#####Network (V2) - Configs
+#####  Network (V2) - Configs
 
 ```python
 NUM_CLASSES = 10
@@ -99,7 +99,7 @@ Mini-batch loss: 0.04057 Error: 2.00000 Learning rate: 0.01000
 Validation error: 2.3%
 ```
 
-#####Network (V3) - Configs 
+#####  Network (V3) - Configs 
 
 ```python
 NUM_CLASSES = 10
@@ -153,7 +153,7 @@ Mini-batch loss: 2.87223 Error: 0.00000 Learning rate: 0.01000
 Validation error: 2.1%
 ```
 
-#####Network (V4) - Configs 
+#####  Network (V4) - Configs 
 
 ```python
 NUM_CLASSES = 10
